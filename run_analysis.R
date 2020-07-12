@@ -1,10 +1,11 @@
 # load dplyr
 library(dplyr)
+setwd("~/Documents/GitHub/Course-Project-2")
 # get data from web
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 if(!file.exists("./data")) {dir.create("./data")}
 download.file(fileUrl, destfile = "./data/samsung.zip", method="curl")
-unzip(zipfile = "samsung.zip", exdir = "./samsungUnzip")
+unzip(zipfile = "./data/samsung.zip", exdir = "./data/samsungUnzip")
 setwd("./data/samsungUnzip")
 #reading data into R
 #preparing "features" and "activities"
@@ -34,11 +35,11 @@ names(select_mSD) <- gsub("BodyBody", "Body", names(select_mSD))
 names(select_mSD) <- gsub("Gyro", "Gyroscope", names(select_mSD))
 names(select_mSD) <- gsub("Mag", "Magnitude", names(select_mSD))
 names(select_mSD) <- gsub("^t", "Time", names(select_mSD))
-names(select_mSD) <- gsub("ˆf", "Frequency", names(select_mSD))
+names(select_mSD) <- gsub("^f", "Frequency", names(select_mSD))
 names(select_mSD) <- gsub("tBody", "TimeBody", names(select_mSD))
 names(select_mSD) <- gsub("-freq()", "Frequency", names(select_mSD), ignore.case = TRUE)
 #create tidy dataset with average of each variable
 tidy <- group_by(select_mSD, subject, activities) %>%
         summarise_all(funs(mean))
-write.table(tidy, "tidy.txt", row.name=FALSE)
+write.table(tidy, "~/Documents/GitHub/Course-Project-2/tidy.txt", row.name=FALSE)
 
